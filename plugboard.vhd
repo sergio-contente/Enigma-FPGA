@@ -42,7 +42,7 @@ architecture plugboard_arch of plugboard is
 	"00110", "00111", "01000", "01001", "01010", "01011", 
 	"01100", "01101", "01110", "01111", "10000", "10001", 
 	"10010", "10011", "10100", "10101", "10110", "10111",
-	"11000", "11001"); -- Esse vetor nunca deve ser modificado! Serve para o reset
+	"11000", "11001", "11010"); -- Esse vetor nunca deve ser modificado! Serve para o reset
 begin
 	process(clock, clear, switch_letters, letters)
 	begin
