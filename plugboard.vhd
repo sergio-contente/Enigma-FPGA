@@ -25,9 +25,9 @@ entity plugboard is
 				clock : in  std_logic;
 				clear : in  std_logic;
 				switch_letters : in std_logic; -- Enable para trocar original_letter com new_letter
-				from_letter : in std_logic(4 downto 0); -- Letra original
+				from_letter : in std_logic_vector(4 downto 0); -- Letra original
 				to_letter : in std_logic_vector(4 downto 0); -- Letra a ser trocada para o endereco da original
-        final_letter : out std_logic_vector(4 downto 0);
+        final_letter : out std_logic_vector(4 downto 0)
     );
 end plugboard;
 
