@@ -32,7 +32,7 @@ entity plugboard is
 end plugboard;
 
 architecture plugboard_arch of plugboard is
-	type alphabet is array (0 to 25) of std_logic_vector(4 downto 0);
+	type alphabet is array (0 to 26) of std_logic_vector(4 downto 0);
 	signal letters : alphabet := ("00000", "00001", "00010", "00011", "00100", "00101", 
 											"00110", "00111", "01000", "01001", "01010", "01011", 
 											"01100", "01101", "01110", "01111", "10000", "10001", 
