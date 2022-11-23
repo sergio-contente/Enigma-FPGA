@@ -37,11 +37,19 @@ architecture plugboard_arch of plugboard is
 											"00110", "00111", "01000", "01001", "01010", "01011", 
 											"01100", "01101", "01110", "01111", "10000", "10001", 
 											"10010", "10011", "10100", "10101", "10110", "10111",
-											"11000", "11001");
+											"11000", "11001"); -- Esse aqui eh o vetor que sofrer permutacoes com os ciclos de clock
+	signal fixed_alphabet : alphabet := ("00000", "00001", "00010", "00011", "00100", "00101", 
+	"00110", "00111", "01000", "01001", "01010", "01011", 
+	"01100", "01101", "01110", "01111", "10000", "10001", 
+	"10010", "10011", "10100", "10101", "10110", "10111",
+	"11000", "11001"); -- Esse vetor nunca deve ser modificado! Serve para o reset
 begin
 	process(clock, clear, switch_letters, letters)
 	begin
-		if (clear = '1') then letters(to_integer(unsigned(from_letter))) <= letters(to_integer(unsigned(from_letter)));
+		if (clear = '1') then 
+			for i in 0 to 25 loop
+				letters(i) <= fixed_alphabet(i);
+			end loop;
 		elsif (clock'event and clock='1') then 
 			if (switch_letters = '1') then
 				letters(to_integer(unsigned(from_letter))) <= to_letter;
