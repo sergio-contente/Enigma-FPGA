@@ -47,7 +47,7 @@ begin
 	process(clock, clear, switch_letters, letters)
 	begin
 		if (clear = '1') then 
-			for i in 0 to 25 loop
+			for i in 0 to 26 loop
 				letters(i) <= fixed_alphabet(i);
 			end loop;
 		elsif (clock'event and clock='1') then 
