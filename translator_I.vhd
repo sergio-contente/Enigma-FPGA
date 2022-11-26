@@ -12,7 +12,7 @@
 ----------------------------------------------------------------------------
 -- Revisoes  :
 --     Data        Versao  Autor             						Descricao
---     23/11/2022  1.0     Sergio Magalhaes Contente 		criacao
+--     26/11/2022  1.0     Sergio Magalhaes Contente 		criacao
 ------
 
 library ieee;
