@@ -19,6 +19,7 @@ entity ring_position is
 		clock : in std_logic;
 		reset : in std_logic;
 		set : in std_logic;
+		direction : in std_logic;
 		ring_pos : in std_logic_vector(4 downto 0);
 		letter_in : in std_logic_vector(4 downto 0);
 		letter_out : out std_logic_vector(4 downto 0)
@@ -53,14 +54,18 @@ begin
 			Q => s_ring_pos
 		);
 	
-	shift_ring_pos : process(letter_in, clock, s_ring_pos)
+	shift_ring_pos : process(letter_in, clock, s_ring_pos, direction)
 	begin
 	if clock'event and clock='1' then
-		s_letter_out <= std_logic_vector(to_unsigned((to_integer(unsigned(s_letter_in)) + to_integer(unsigned(s_ring_pos))) rem 27), s_letter_out'length);
+        if direction = '0' then
+    		s_letter_out <= std_logic_vector(to_unsigned((to_integer(unsigned(s_letter_in)) + to_integer(unsigned(s_ring_pos))) mod 27), s_letter_out'length);
+        else
+    		s_letter_out <= std_logic_vector(to_unsigned((to_integer(unsigned(s_letter_in)) - to_integer(unsigned(s_ring_pos))) mod 27), s_letter_out'length);
+        end if;
 	end if;
 	end process shift_ring_pos;
-	
+
 	letter_in <= s_letter_in;
 	letter_out <= s_letter_out;
-		
+
 end architecture;
