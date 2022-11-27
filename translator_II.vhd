@@ -31,7 +31,7 @@ architecture translator_II_arch of translator_II is
 	signal s_letter_in, s_letter_out: std_logic_vector(4 downto 0);
 begin
 	s_letter_in <= original;
-	rotation_rotor_I: process (s_letter_in, s_letter_out, direction)
+	rotation_rotor_II: process (s_letter_in, s_letter_out, direction)
 	begin
 			case s_letter_in is
 				when "00000" => -- A	
@@ -192,13 +192,13 @@ begin
 					end if;
 				when "11010" =>    -- " "
 					if (direction = '0') then
-								s_letter_out <= "11001"; -- rotor 1, S
+								s_letter_out <= "10010"; -- rotor 1, S
 					else
 								s_letter_out <= "00100"; -- rotor 1, E
 					end if;
 				when others =>     -- should never be reached
 					s_letter_out <= (others => '1'); -- non-existing letter code ("11111")
 		end case;
-	end process rotation_rotor_I;
+	end process rotation_rotor_II;
 	saida <= s_letter_out;
 end architecture;

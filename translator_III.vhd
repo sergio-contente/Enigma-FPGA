@@ -19,7 +19,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity translator_IIII is
+entity translator_III is
     port (
         original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
 				direction : in std_logic;
@@ -27,7 +27,7 @@ entity translator_IIII is
     ); 
 end entity;
 
-architecture translator_II_arch of translator_II is
+architecture translator_III_arch of translator_III is
 	signal s_letter_in, s_letter_out: std_logic_vector(4 downto 0);
 begin
 	s_letter_in <= original;

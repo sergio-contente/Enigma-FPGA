@@ -19,7 +19,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity translator_IIII is
+entity translator_IV is
     port (
         original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
 				direction : in std_logic;
@@ -27,11 +27,11 @@ entity translator_IIII is
     ); 
 end entity;
 
-architecture translator_II_arch of translator_II is
+architecture translator_IV_arch of translator_IV is
 	signal s_letter_in, s_letter_out: std_logic_vector(4 downto 0);
 begin
 	s_letter_in <= original;
-	rotation_rotor_III: process (s_letter_in, s_letter_out, direction)
+	rotation_rotor_IV: process (s_letter_in, s_letter_out, direction)
 	begin
 			case s_letter_in is
 				when "00000" => -- A	
@@ -199,6 +199,6 @@ begin
 				when others =>     -- should never be reached
 					s_letter_out <= (others => '1'); -- non-existing letter code ("11111")
 		end case;
-	end process rotation_rotor_III;
+	end process rotation_rotor_IV;
 	saida <= s_letter_out;
 end architecture;
