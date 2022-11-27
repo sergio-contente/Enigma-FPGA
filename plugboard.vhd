@@ -53,9 +53,10 @@ begin
 		elsif (clock'event and clock='1') then 
 			if (switch_letters = '1') then
 				letters(to_integer(unsigned(from_letter))) <= to_letter;
+				letters(to_integer(unsigned(to_letter))) <= from_letter;
 			end if;
 		end if;
+		end process;
 
-		final_letter <= letters(to_integer(unsigned(from_letter)));
-	end process;
+	final_letter <= letters(to_integer(unsigned(from_letter)));
 end plugboard_arch;
