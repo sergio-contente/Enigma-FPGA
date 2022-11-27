@@ -26,7 +26,7 @@ entity rotor_turnover is
 	port(
 			rotor_type : in std_logic_vector(2 downto 0); -- Temos 5 tipos diferentes de Rotor (I, II, III, IV e V)
 			current_letter : in  std_logic_vector(4 downto 0); -- Valor atual da letra mostrada no rotor
-		  turnover_rotor : out  std_logic -- Se deve rotacionar ou nao o proximo rotor
+			turnover_rotor : out  std_logic -- Se deve rotacionar ou nao o proximo rotor
 		); 
 end rotor_turnover;
 
