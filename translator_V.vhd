@@ -194,7 +194,7 @@ begin
 					if (direction = '0') then
 								s_letter_out <= "10011"; -- rotor 1, T
 					else
-								s_letter_out <= "000110"; -- rotor 1, G
+								s_letter_out <= "00110"; -- rotor 1, G
 					end if;
 				when others =>     -- should never be reached
 					s_letter_out <= (others => '1'); -- non-existing letter code ("11111")
