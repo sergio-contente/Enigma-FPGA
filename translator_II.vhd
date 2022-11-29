@@ -21,6 +21,7 @@ use ieee.numeric_std.all;
 
 entity translator_II is
     port (
+				enable : in std_logic_vector(2 downto 0);
         original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
 				direction : in std_logic;
         saida    : out std_logic_vector(4 downto 0) -- Combinacao
@@ -33,6 +34,7 @@ begin
 	s_letter_in <= original;
 	rotation_rotor_II: process (s_letter_in, s_letter_out, direction)
 	begin
+		if(enable = "001") then
 			case s_letter_in is
 				when "00000" => -- A	
 					if (direction = '0') then
@@ -198,7 +200,8 @@ begin
 					end if;
 				when others =>     -- should never be reached
 					s_letter_out <= (others => '1'); -- non-existing letter code ("11111")
-		end case;
-	end process rotation_rotor_II;
+				end case;
+			end if;
+		end process rotation_rotor_II;
 	saida <= s_letter_out;
 end architecture;
