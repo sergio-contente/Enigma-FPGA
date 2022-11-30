@@ -63,6 +63,11 @@ architecture fd_arch of engima_fd is
 end component;
 
 begin
+-------------------------------------------------------------
+--
+--           Setup Inicial das Configuracoes
+--
+-------------------------------------------------------------
 
 -- Registra a letra recebida serialmente
 
@@ -204,4 +209,13 @@ begin
 		 D      => third_rotor_type,
 		 Q      => s_third_rotor_type
 	);
+
+	--------------------------------------------------------------------------------------------------------------
+--
+-- Mudanca do estado de rotores ao receber uma letra nova
+--
+-----------------------------------------------------------------------------------------------------------------
+
+
+
 end fd_arch;
