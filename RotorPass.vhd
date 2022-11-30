@@ -151,7 +151,7 @@ begin
 			clear => clear,
 			enable_rotation => enable_rotation,
 			rotor_letter_in => s_letter_anel,
-			rotor_type_in +> rotor_type,
+			rotor_type_in => rotor_type,
 			rotor_out =>  s_letter_rotor_out,
 			rotate_next_rotor => rotor_turnover
 		);
