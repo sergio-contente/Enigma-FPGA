@@ -72,10 +72,8 @@ architecture fd_arch of fd is
     end component;
 
     signal s_plug_config_enable, s_rotor_1_enable, s_rotor_2_enable, s_rotor_3_enable, s_reflector_enable,
-           s_set_anel_1, s_set_pos_1, s_gira_prox_1,
-           s_set_anel_2, s_set_pos_2, s_gira_2, s_gira_prox_2,
-           s_set_anel_3, s_set_pos_3, s_gira_3,
-           s_switch_letters : std_logic;
+           s_set_anel_1, s_set_pos_1, s_gira_prox_1, s_set_anel_2, s_set_pos_2, s_gira_2, s_gira_prox_2,
+           s_set_anel_3, s_set_pos_3, s_gira_3, s_switch_letters : std_logic;
 
     signal s_reflector_type : std_logic_vector(1 downto 0);
     
