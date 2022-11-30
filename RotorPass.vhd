@@ -17,54 +17,30 @@ entity RotorPass is
 	port(
 		clock  : in  std_logic;
 		clear : in std_logic;
+
 		direction : in std_logic;
-		rotor_type : in std_logic_vector(2 downto 0);
-		enable_inicial : in std_logic;
-		enable_rotation : in std_logic;
-		set_ring: in std_logic;
-		ringstellung : in std_logic_vector(4 downto 0); -- posicao anel
-		grundstellung : in std_logic_vector(4 downto 0); -- posicao inicial do rotor
-		rotor_turnover : out std_logic;
-		letter_in : in std_logic_vector(4 downto 0);
-		letter_out : out std_logic_vector(4 downto 0)
+		gira_primeiro : in std_logic;
+
+		first_letter_in : in std_logic_vector(4 downto 0);
+		second_letter_in : in std_logic_vector(4 downto 0);
+		third_letter_in : in std_logic_vector(4 downto 0);
+
+		s_first_rotor_type : in std_logic_vector(2 downto 0);
+		s_second_rotor_type : in std_logic_vector(2 downto 0);
+		s_third_rotor_type : in std_logic_vector(2 downto 0);
+		
+		first_letter_out : out std_logic_vector(4 downto 0);
+		second_letter_out : out std_logic_vector(4 downto 0);
+		third_letter_out : out std_logic_vector(4 downto 0);
+
+		enable_refletor : out std_logic
 	);
 end RotorPass;
 
-architecture rotor_initial_position_arch of rotor_initial_position is
-	signal s_letter_inicial_in, s_letter_anel, s_letter_out, s_letter_rotor_out, s_letter_tradutor: std_logic_vector(4 downto 0);
+architecture RotorPass_arch of RotorPass is
+	signal 
 
-	component registrador_n is
-		generic (
-		   constant N: integer := 8 
-		);
-		port (
-		   clock  : in  std_logic;
-		   clear  : in  std_logic;
-		   enable : in  std_logic;
-		   D      : in  std_logic_vector (N-1 downto 0);
-		   Q      : out std_logic_vector (N-1 downto 0) 
-		);
-	end component;
-
-	component rotor_turnover is
-		port(
-				rotor_type : in std_logic_vector(2 downto 0); -- Temos 5 tipos diferentes de Rotor (I, II, III, IV e V)
-				current_letter : in  std_logic_vector(4 downto 0); -- Valor atual da letra mostrada no rotor
-				turnover_rotor : out  std_logic -- Se deve rotacionar ou nao o proximo rotor
-			); 
-	end component;
-
-	component ring_position is
-		port(
-			clock : in std_logic;
-			reset : in std_logic;
-			set : in std_logic;
-			direction : in std_logic;
-			ring_pos : in std_logic_vector(4 downto 0);
-			letter_in : in std_logic_vector(4 downto 0);
-			letter_out : out std_logic_vector(4 downto 0)
-		);
-	end component;
+	
 
 	component rotor_rotate is
 		port (
@@ -78,119 +54,112 @@ architecture rotor_initial_position_arch of rotor_initial_position is
 		);
 	end component;
 
-	component translator_I is
-    port (
-				enable   : in std_logic_vector(2 downto 0);
-        original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
-				direction : in std_logic;
-        saida    : out std_logic_vector(4 downto 0) -- Combinacao
-    ); 
+	component TraduzLetra is
+		port(
+			rotor_type: in std_logic_vector(2 downto 0);
+			letter_in : in std_logic_vector(4 downto 0);
+			direction: in std_logic;
+			letter_out : out std_logic_vector(4 downto 0)
+		);
 	end component;
 
-	component translator_II is
-    port (
-				enable   : in std_logic_vector(2 downto 0);
-        original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
-				direction : in std_logic;
-        saida    : out std_logic_vector(4 downto 0) -- Combinacao
-    ); 
-	end component;
-
-	component translator_III is
-    port (
-				enable   : in std_logic_vector(2 downto 0);
-        original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
-				direction : in std_logic;
-        saida    : out std_logic_vector(4 downto 0) -- Combinacao
-    ); 
-	end component;
-
-	component translator_IV is
-    port (
-				enable   : in std_logic_vector(2 downto 0);
-        original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
-				direction : in std_logic;
-        saida    : out std_logic_vector(4 downto 0) -- Combinacao
-    ); 
-	end component;
-
-	component translator_V is
-    port (
-				enable   : in std_logic_vector(2 downto 0);
-        original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
-				direction : in std_logic;
-        saida    : out std_logic_vector(4 downto 0) -- Combinacao
-    ); 
-	end component;
+signal gira_segundo, gira_terceiro : std_logic;
+signal s_first_letter, s_second_letter, s_third_letter : std_logic_vector(4 downto 0);
 
 begin
 
-	letra_inicial: registrador_n
-		port map(
-			clock => clock,
-			clear => clear,
-			enable => enable_inicial,
-			D => letter_in,
-			Q => s_letter_inicial_in
-		);
+	---------------------------------------
+--
+-- Rotacionamento do primeiro rotor
+--
+----------------------------------------
+first_spin: rotor_rotate
+port map(
+	clock => clock,
+	clear => clear,
+	enable_rotation => gira_primeiro,
+	rotor_letter_in => first_letter_in,
+	rotor_type_in => s_first_rotor_type;
+	rotor_out =>  s_first_letter,
+	rotate_next_rotor => gira_segundo
+);
 
-	anel: ring_position
-		port map(
-			clock => clock,
-			reset => clear,
-			set => set_ring,
-			direction => direction,
-			ring_pos => ringstellung,
-			letter_in => s_letter_inicial_in,
-			letter_out => s_letter_anel
-		);
 
-	gira_rotor: rotor_rotate
-		port map (
-			clock => clock,
-			clear => clear,
-			enable_rotation => enable_rotation,
-			rotor_letter_in => s_letter_anel,
-			rotor_type_in +> rotor_type,
-			rotor_out =>  s_letter_rotor_out,
-			rotate_next_rotor => rotor_turnover
-		);
+---------------------------------------
+--
+-- Combinacao da primeira letra
+--
+----------------------------------------
 
-	tradutor_I: port map (
-		enable   => rotor_type,
-		original => s_letter_rotor_out, -- Letra do comeco 
-		direction => direction,
-		saida    =>  s_letter_traducao-- Combinacao
-); 
+first_translation: TraduzLetra
+port map(
+	rotor_type => s_first_rotor_type,
+	letter_in => s_first_letter,
+	direction => direction,
+	letter_out => first_letter_out
+);
 
-tradutor_II: port map (
-		enable   => rotor_type,
-		original => s_letter_rotor_out, -- Letra do comeco 
-		direction => direction,
-		saida    =>  s_letter_traducao-- Combinacao
-); 
 
-tradutor_III: port map (
-		enable   => rotor_type,
-		original => s_letter_rotor_out, -- Letra do comeco 
-		direction => direction,
-		saida    =>  s_letter_traducao-- Combinacao
-); 
+---------------------------------------
+--
+-- Rotacionamento do segundo rotor
+--
+----------------------------------------
+second_spin: rotor_rotate
+port map(
+clock => clock,
+clear => clear,
+enable_rotation => gira_segundo,
+rotor_letter_in => second_letter_in,
+rotor_type_in => s_second_rotor_type;
+rotor_out => s_second_letter,
+rotate_next_rotor => gira_terceiro
+);
 
-tradutor_IV: port map (
-		enable   => rotor_type,
-		original => s_letter_rotor_out, -- Letra do comeco 
-		direction => direction,
-		saida    =>  s_letter_traducao-- Combinacao
-); 
+---------------------------------------
+--
+-- Combinacao da segunda letra
+--
+----------------------------------------
 
-tradutor_V: port map (
-		enable   => rotor_type,
-		original => s_letter_rotor_out, -- Letra do comeco 
-		direction => direction,
-		saida    =>  s_letter_traducao-- Combinacao
-); 
+second_translation: TraduzLetra
+port map(
+rotor_type => s_second_rotor_type,
+letter_in => s_second_letter,
+direction => direction,
+letter_out => second_letter_out
+);
 
-letter_out <= s_letter_traducao;
+---------------------------------------
+--
+-- Rotacionamento do terceiro rotor
+--
+----------------------------------------
+third_spin: rotor_rotate
+port map(
+clock => clock,
+clear => clear,
+enable_rotation => gira_terceiro,
+rotor_letter_in => third_letter_in,
+rotor_type_in => s_third_rotor_type;
+rotor_out => s_third_letter,
+rotate_next_rotor => open
+);
+
+---------------------------------------
+--
+-- Combinacao da terceira letra
+--
+----------------------------------------
+
+third_translation: TraduzLetra
+port map(
+rotor_type => s_third_rotor_type,
+letter_in => s_third_letter,
+direction => direction,
+letter_out => third_letter_out
+);
+
+enable_refletor <= '1' when  gira_terceiro = '1' and direction = '0' else '0';
 
 end architecture;

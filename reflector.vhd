@@ -20,6 +20,8 @@ entity reflector is
     port(
 				reflector_type : in std_logic_vector(1 downto 0); -- "00": TIPO A, "01": TIPO B, "10": TIPO C
         letter_in : in std_logic_vector(4 downto 0);
+				enable_reflector: in std_logic;
+
         letter_out: out std_logic_vector(4 downto 0)
     );
 end reflector;
@@ -31,6 +33,7 @@ begin
 	
 		reflect: process (letter_in, reflector_type)
 		begin
+		if enable_refletor = '1' then
 			case letter_in is
 				when "00000" =>    -- A
 					case reflector_type is
@@ -197,8 +200,8 @@ begin
 					when others =>
 						s_letter_out <= (others => '1'); -- depuracao ("11111")
 				end case;
+			end if;
 			end process;
 					
 			letter_out <= s_letter_out;
-
 end reflector_arch;
