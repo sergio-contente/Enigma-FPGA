@@ -62,63 +62,6 @@ component registrador_n is
     );
 end component;
 
-component ring_position is
-	port(
-		clock : in std_logic;
-		reset : in std_logic;
-		set : in std_logic;
-		direction : in std_logic;
-		ring_pos : in std_logic_vector(4 downto 0);
-		letter_in : in std_logic_vector(4 downto 0);
-		letter_out : out std_logic_vector(4 downto 0)
-	);
-end component;
-
-component rotor_rotate is
-	port (
-		clock : in std_logic;
-		clear : in std_logic;
-		enable_rotation : in std_logic;
-		rotor_letter_in : in std_logic_vector(4 downto 0);
-		rotor_type_in : in std_logic_vector(2 downto 0);
-		rotor_out : out std_logic_vector(4 downto 0);
-		rotate_next_rotor : out std_logic
-	);
-end  component;
-
-component TraduzLetra is
-	port(
-		rotor_type: in std_logic_vector(2 downto 0);
-		letter_in : in std_logic_vector(4 downto 0);
-		direction: in std_logic;
-		letter_out : out std_logic_vector(4 downto 0)
-	);
-end component;
-
-component RotorPass is
-	port(
-		clock  : in  std_logic;
-		clear : in std_logic;
-
-		direction : in std_logic;
-		gira_primeiro : in std_logic;
-
-		first_letter_in : in std_logic_vector(4 downto 0);
-		second_letter_in : in std_logic_vector(4 downto 0);
-		third_letter_in : in std_logic_vector(4 downto 0);
-
-		s_first_rotor_type : in std_logic_vector(2 downto 0);
-		s_second_rotor_type : in std_logic_vector(2 downto 0);
-		s_third_rotor_type : in std_logic_vector(2 downto 0);
-		
-		first_letter_out : out std_logic_vector(4 downto 0);
-		second_letter_out : out std_logic_vector(4 downto 0);
-		third_letter_out : out std_logic_vector(4 downto 0);
-
-		fim_combinacao : out std_logic
-	);
-end component;
-
 component rotor is
 	port(
 		clock  : in  std_logic;
@@ -325,9 +268,7 @@ begin
 		 Q      => s_third_rotor_type
 	);
 
-
-
-	first_letter_in <=  s_plugboard(to_integer(unsigned(letra_original_serial))) when direction = '0' else
+	first_letter_in <=  s_plugboard(to_integer(unsigned(s_letra_recebia))) when direction = '0' else
 
 											s_plugboard(to_integer(unsigned(letra_refletida))) when direction = '1';	
 
@@ -363,7 +304,7 @@ port map(
 		clear => clear,
 
 		direction => direction,
-		gira => gira_primeiro,
+		gira => recebe_gira_primeiro,
 
 		letter_in => s_first_letter_preprocess,
 
@@ -406,7 +347,7 @@ port map(
 		clear => clear,
 
 		direction => direction,
-		gira => gira_primeiro,
+		gira => recebe_gira_psegundo,
 
 		letter_in => s_second_letter_preprocess,
 
@@ -440,7 +381,7 @@ port map(
 );
 
 -----------------------------------------------------------------
---  Codificacao sterceiro rotor                                  -------
+--  Codificacao terceiro rotor                                  -------
 ------------------------------------------------------------------
 
 terceiro_rotor: rotor
@@ -449,13 +390,13 @@ port map(
 		clear => clear,
 
 		direction => direction,
-		gira => gira_primeiro,
+		gira => recebe_gira_terceiro,
 
-		letter_in => s_terceiro_letter_preprocess,
+		letter_in => s_third_letter_preprocess,
 
-		rotor_type => s_terceiro_rotor_type,
+		rotor_type => s_third_rotor_type,
 		
-		letter_out => s_terceiro_letter_in,
+		letter_out => s_third_letter_out,
 
 		turn_next => '0',
 		fim_rotor => fim_combinacao
@@ -466,11 +407,13 @@ port map(
 
 	Refletor: reflector
 	port map(
-		reflector_type : in std_logic_vector(1 downto 0); -- "00": TIPO A, "01": TIPO B, "10": TIPO C
-		letter_in : in std_logic_vector(4 downto 0);
+		reflector_type => s_refletor_type,
+		letter_in => s_third_letter_out,
 		enable_reflector => enable_refletor,
 
-		letter_out: out std_logic_vector(4 downto 0)
+		letter_out => letter_refletor
 	);
+
+third_letter_out <= s_third_letter_out;
 
 end fd_arch;
