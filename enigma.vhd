@@ -72,6 +72,55 @@ architecture enigma_arch of enigma is
         dados_ascii_o        : out std_logic_vector (7 downto 0)
     );
 	 end component;
+
+	 component hex7seg is
+    port (
+        hexa : in  std_logic_vector(3 downto 0);
+        sseg : out std_logic_vector(6 downto 0)
+    );
+	 end component;
+
+	 component ascii_to_5bit is
+		port(
+				ascii : in std_logic(6 downto 0);
+				5bit : out std_logic(4 downto 0)
+		);
+	 end component;
+
+	 component bit_to_ascii is
+    port(
+        5bit : out std_logic(4 downto 0);
+        ascii : in std_logic(6 downto 0)
+    );
+	 end component;
 begin
-	
+	enigma_fd : fd
+		port map(
+			clock            => clock,
+			reset            => reset,
+			entrada          => s_entrada,
+			set_config       => s_set_config,
+			anel_not_pos_ini => s_anel_not_pos_ini,
+			gira             => s_gira,
+			config_device    => s_config_device,
+			letra_visor_1    => s_letra_visor_1,
+			letra_visor_2    => s_letra_visor_2,
+			letra_visor_3    => s_letra_visor_3,
+			saida            => s_saida
+		);
+
+	enigma_uc : uc
+		port map(
+			clock              => clock,
+			reset              => reset,
+			tem_dado           => s_tem_dado,
+			pronto_config_plug => s_pronto_config_plug,
+			pronto_tx          => s_pronto_tx,
+			set_config         => s_set_config,
+			anel_not_pos_ini   => s_anel_not_pos_ini,
+			gira               => s_gira,
+			config_device      => s_config_device,
+			transmite          => s_transmite,
+			estado             => s_estado
+		);
 end architecture;
