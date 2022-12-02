@@ -171,35 +171,40 @@ begin
                                                    + to_integer(unsigned(s_rot_atual))
                                                    - to_integer(unsigned(s_pos_anel))) mod 27), s_conex_dir_in'length));
 
-    tradutor_I_dir: port map (
+    tradutor_I_dir : translator_I
+        port map (
             enable   => rotor_type,
             original => s_conex_dir_in, -- Letra do comeco 
             direction => '0',
             saida    =>  s_conex_dir_out_1-- Combinacao
     ); 
     
-    tradutor_II_dir: port map (
+    tradutor_II_dir : translator_II
+        port map (
             enable   => rotor_type,
             original => s_conex_dir_in, -- Letra do comeco 
             direction => '0',
             saida    =>  s_conex_dir_out_2-- Combinacao
     ); 
     
-    tradutor_III_dir: port map (
+    tradutor_III_dir : translator_III
+        port map (
             enable   => rotor_type,
             original => s_conex_dir_in, -- Letra do comeco 
             direction => '0',
             saida    =>  s_conex_dir_out_3-- Combinacao
     ); 
     
-    tradutor_IV_dir: port map (
+    tradutor_IV_dir : translator_IV
+        port map (
             enable   => rotor_type,
             original => s_conex_dir_in, -- Letra do comeco 
             direction => '0',
             saida    =>  s_conex_dir_out_4-- Combinacao
     ); 
     
-    tradutor_V_dir: port map (
+    tradutor_V_dir : translator_V
+        port map (
             enable   => rotor_type,
             original => s_conex_dir_in, -- Letra do comeco 
             direction => '0',
@@ -223,35 +228,40 @@ begin
                                                    + to_integer(unsigned(s_rot_atual))
                                                    - to_integer(unsigned(s_pos_anel))) mod 27), s_conex_inv_in'length));
 
-    tradutor_I_inv: port map (
+    tradutor_I_inv : translator_I
+        port map (
             enable   => rotor_type,
             original => s_conex_inv_in, -- Letra do comeco 
             direction => '1',
             saida    =>  s_conex_inv_out_1-- Combinacao
     ); 
     
-    tradutor_II_inv: port map (
+    tradutor_II_inv : translator_II
+        port map (
             enable   => rotor_type,
             original => s_conex_inv_in, -- Letra do comeco 
             direction => '1',
             saida    =>  s_conex_inv_out_2-- Combinacao
     ); 
     
-    tradutor_III_inv: port map (
+    tradutor_III_inv : translator_III
+        port map (
             enable   => rotor_type,
             original => s_conex_inv_in, -- Letra do comeco 
             direction => '1',
             saida    =>  s_conex_inv_out_3-- Combinacao
     ); 
     
-    tradutor_IV_inv: port map (
+    tradutor_IV_inv : translator_IV
+        port map (
             enable   => rotor_type,
             original => s_conex_inv_in, -- Letra do comeco 
             direction => '1',
             saida    =>  s_conex_inv_out_4-- Combinacao
     ); 
     
-    tradutor_V_inv: port map (
+    tradutor_V_inv : translator_V
+        port map (
             enable   => rotor_type,
             original => s_conex_inv_in, -- Letra do comeco 
             direction => '1',
