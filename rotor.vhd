@@ -102,15 +102,17 @@ architecture rotor_arch of rotor is
     ); 
 	end component;
 
+    signal s_gira_prox : std_logic;
+
     signal s_pos_anel, s_pos_ini, s_rot_atual, s_entrada_dir, s_saida_dir, s_conex_dir_in, s_conex_dir_out, s_conex_inv_out,
            s_conex_dir_out_1, s_conex_dir_out_2, s_conex_dir_out_3, s_conex_dir_out_4, s_conex_dir_out_5,
            s_conex_inv_out_1, s_conex_inv_out_2, s_conex_inv_out_3, s_conex_inv_out_4, s_conex_inv_out_5,
            s_entrada_inv, s_saida_inv, s_conex_inv_in, s_letra_visor, s_pos_rotor : std_logic_vector(4 downto 0);
 
 begin
-    entrada_dir <= s_entrada_dir;
+    s_entrada_dir <= entrada_dir;
     saida_dir <= s_saida_dir;
-    entrada_inv <= s_entrada_inv;
+    s_entrada_inv <= entrada_inv;
     saida_inv <= s_saida_inv;
     
     letra_visor <= s_letra_visor;
@@ -216,7 +218,7 @@ begin
                        s_conex_dir_out_3 when rotor_type = "010" else
                        s_conex_dir_out_4 when rotor_type = "011" else
                        s_conex_dir_out_5 when rotor_type = "100" else
-                       '0';
+                       "00000";
 
     s_saida_dir <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_conex_dir_out))
                                                 - to_integer(unsigned(s_pos_ini))
@@ -273,7 +275,7 @@ begin
                        s_conex_inv_out_3 when rotor_type = "010" else
                        s_conex_inv_out_4 when rotor_type = "011" else
                        s_conex_inv_out_5 when rotor_type = "100" else
-                       '0';
+                       "00000";
 
     s_saida_inv <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_conex_inv_out))
                                                 - to_integer(unsigned(s_pos_ini))

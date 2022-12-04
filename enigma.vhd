@@ -97,20 +97,19 @@ architecture enigma_arch of enigma is
 
 	 component ascii_to_5bit is
 		port(
-			ascii : in std_logic(6 downto 0);
-			5bit : out std_logic(4 downto 0)
+			ascii : in std_logic_vector(6 downto 0);
+			fivebit : out std_logic_vector(4 downto 0)
 		);
 	 end component;
 
 	 component bit_to_ascii is
     port(
-			5bit : out std_logic(4 downto 0);
-			ascii : in std_logic(6 downto 0)
+			fivebit : in std_logic_vector(4 downto 0);
+			ascii : out std_logic_vector(6 downto 0)
     );
 	 end component;
 
-	signal s_entrada,	s_set_config,	s_anel_not_pos_ini,	s_gira, s_tem_dado,	s_pronto_config_plug,	s_pronto_tx,
-				 s_transmite, s_conta_plug_config : std_logic;
+	signal s_set_config, s_anel_not_pos_ini, s_gira, s_tem_dado, s_pronto_config_plug, s_pronto_tx, s_transmite, s_conta_plug_config : std_logic;
 	signal s_config_device : std_logic_vector(3 downto 0);
 	signal s_entrada,	s_letra_visor_1,	s_letra_visor_2, s_letra_visor_3,	s_saida, s_estado : std_logic_vector(4 downto 0);
 	signal s_entrada_ascii,	s_saida_ascii : std_logic_vector(6 downto 0);
@@ -177,13 +176,13 @@ begin
 	conversor_entrada : ascii_to_5bit
 		port map(
 			ascii => s_entrada_ascii,
-			5bit  => s_entrada
+			fivebit  => s_entrada
 		);
 	
 	
 	conversor_saida : bit_to_ascii
     port map(
-			5bit  => s_saida,
+			fivebit  => s_saida,
 			ascii => s_saida_ascii
     );
 	
@@ -193,7 +192,7 @@ begin
 			reset                 => reset,
 			partida               => s_transmite,
 			protocol              => '0', -- ????????????????????????????? TODO
-			dados_ascii           => s_saida_ascii,
+			dados_ascii           => '0' & s_saida_ascii,
 			saida_serial          => saida_serial,
 			pronto                => s_pronto_tx,
 			saida_protocol        => open,

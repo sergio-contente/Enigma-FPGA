@@ -4,8 +4,8 @@ use IEEE.NUMERIC_STD.all;
 
 entity ascii_to_5bit is
     port(
-        ascii : in std_logic(6 downto 0);
-        5bit : out std_logic(4 downto 0)
+        ascii : in std_logic_vector(6 downto 0);
+        fivebit : out std_logic_vector(4 downto 0)
     );
 end ascii_to_5bit;
 
@@ -67,5 +67,5 @@ begin
                  "11010" when ascii = "0100000" else
                  "11111";
     
-    5bit <= converted;
+    fivebit <= converted;
 end architecture;

@@ -81,7 +81,7 @@ architecture fd_arch of fd is
     
     signal s_entrada_dir_1, s_saida_dir_1, s_entrada_inv_1, s_saida_inv_1, s_to_letter,
            s_entrada_dir_2, s_saida_dir_2, s_entrada_inv_2, s_saida_inv_2,
-           s_entrada_dir_3, s_saida_dir_3, s_entrada_inv_3, s_saida_inv_3, : std_logic_vector(4 downto 0);
+           s_entrada_dir_3, s_saida_dir_3, s_entrada_inv_3, s_saida_inv_3 : std_logic_vector(4 downto 0);
 begin
 
     s_plug_config_enable <= '1' when set_config = '1' and config_device = "0000" else '0';
@@ -102,7 +102,7 @@ begin
 
     rotor_1_type : registrador_n
     generic map (
-        N => 5
+        N => 3
     )
     port map (
         clock => clock,
@@ -116,7 +116,7 @@ begin
 
     rotor_2_type : registrador_n
     generic map (
-        N => 5
+        N => 3
     )
     port map (
         clock => clock,
@@ -130,7 +130,7 @@ begin
 
     rotor_3_type : registrador_n
     generic map (
-        N => 5
+        N => 3
     )
     port map (
         clock => clock,
@@ -142,9 +142,9 @@ begin
 
     s_reflector_enable <= '1' when set_config = '1' and config_device = "1010" else '0';
 
-    reflector_type : registrador_n
+    reflector_type_inst : registrador_n
     generic map (
-        N => 5
+        N => 2
     )
     port map (
         clock => clock,
@@ -230,7 +230,7 @@ begin
             gira_prox      => open
         );
 
-    reflector : reflector
+    inst_reflector : reflector
         port map(
             reflector_type => s_reflector_type,
             letter_in      => s_saida_dir_3,

@@ -21,7 +21,7 @@ use ieee.numeric_std.all;
 
 entity translator_V is
     port (
-			  enable : in std_logic(2 downto 0);
+			  enable : in std_logic_vector(2 downto 0);
         original : in  std_logic_vector(4 downto 0); -- Letra do comeco 
 				direction : in std_logic;
         saida    : out std_logic_vector(4 downto 0) -- Combinacao
