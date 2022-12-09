@@ -58,7 +58,7 @@ architecture tb of enigma_tb is
     type casos_teste_array is array (natural range <>) of caso_teste_type;
     constant casos_teste : casos_teste_array :=
         (
-            (1, "01000001"),    -- A
+            (1, "01000100"),    -- D
             (2, "11000011"),    -- C
             (3, "11000101"),    -- E
             (4, "01000010"),    -- B
@@ -78,11 +78,16 @@ architecture tb of enigma_tb is
             (18, "11000011"),    -- C
             (19, "11000011"),    -- C
             (20, "01000010"),    -- B REFLETOR TIPO 2
-            (21, "11010100"),    -- T
-            (22, "11000101"),    -- E
-            (23, "01010011"),    -- S
-            (24, "11010100"),    -- T
-            (25, "11000101")     -- E
+            (21, "01000100"),    -- D
+            (22, "01010011"),    -- S
+            (23, "11000011"),    -- C
+            (24, "01010011"),    -- S
+            (25, "11010001")     -- Q
+            -- (21, "11010100"),    -- T
+            -- (22, "11000101"),    -- E
+            -- (23, "01010011"),    -- S
+            -- (24, "11010100"),    -- T
+            -- (25, "11000101")     -- E
             -- inserir aqui outros casos de teste (inserir "," na linha anterior)
         );
     signal caso : natural;
