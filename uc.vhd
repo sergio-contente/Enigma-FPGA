@@ -150,17 +150,29 @@ begin
   
     with Eatual select
         config_device <= "0000" when espera_to_plug,
+                         "0000" when registra_to_letter,
                          "1011" when espera_from_plug,
+                         "1011" when conf_plug,
                          "0001" when espera_rot_1,
+                         "0001" when registra_rot_1,
                          "0010" when espera_anel_1,
+                         "0010" when registra_anel_1,
                          "0011" when espera_pos_1,
+                         "0011" when registra_pos_1,
                          "0100" when espera_rot_2,
+                         "0100" when registra_rot_2,
                          "0101" when espera_anel_2,
+                         "0101" when registra_anel_2,
                          "0110" when espera_pos_2,
+                         "0110" when registra_pos_2,
                          "0111" when espera_rot_3,
+                         "0111" when registra_rot_3,
                          "1000" when espera_anel_3,
+                         "1000" when registra_anel_3,
                          "1001" when espera_pos_3,
+                         "1001" when registra_pos_3,
                          "1010" when espera_refl,
+                         "1010" when registra_refl,
                          "1111" when others;
   
     with Eatual select

@@ -109,15 +109,20 @@ architecture enigma_arch of enigma is
     );
 	 end component;
 
-	signal s_set_config, s_anel_not_pos_ini, s_gira, s_tem_dado, s_pronto_config_plug, s_pronto_tx, s_transmite, s_conta_plug_config : std_logic;
+	signal s_set_config, s_anel_not_pos_ini, s_gira, s_tem_dado, s_pronto_config_plug, s_pronto_tx, s_transmite, s_conta_plug_config, s_not_clock : std_logic;
 	signal s_config_device : std_logic_vector(3 downto 0);
 	signal s_entrada,	s_letra_visor_1,	s_letra_visor_2, s_letra_visor_3,	s_saida, s_estado : std_logic_vector(4 downto 0);
 	signal s_entrada_ascii,	s_saida_ascii : std_logic_vector(6 downto 0);
 
 begin
+	process(clock, s_not_clock)
+	begin
+		s_not_clock <= not clock;
+	end process;
+
 	enigma_fd : fd
 		port map(
-			clock            => clock,
+			clock            => s_not_clock,
 			reset            => reset,
 			entrada          => s_entrada,
 			set_config       => s_set_config,
@@ -168,9 +173,9 @@ begin
 			dado_serial       => entrada_serial,
 			dado_recebido     => s_entrada_ascii,
 			paridade_recebida => open,
-			tem_dado          => s_tem_dado,
+			tem_dado          => open,
 			paridade_ok       => open,
-			pronto_rx         => open
+			pronto_rx         => s_tem_dado
 		);
 
 	conversor_entrada : ascii_to_5bit
@@ -191,7 +196,7 @@ begin
 			clock                 => clock,
 			reset                 => reset,
 			partida               => s_transmite,
-			protocol              => '0', -- ????????????????????????????? TODO
+			protocol              => '1',
 			dados_ascii           => '0' & s_saida_ascii,
 			saida_serial          => saida_serial,
 			pronto                => s_pronto_tx,
