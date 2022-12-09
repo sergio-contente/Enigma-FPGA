@@ -41,10 +41,12 @@ architecture plugboard_2way_arch of plugboard_2way is
 											"10010", "10011", "10100", "10101", "10110", "10111",
 											"11000", "11001", "11010"); -- Esse aqui eh o vetor que sofrer permutacoes com os ciclos de clock
 	signal fixed_alphabet : alphabet := ("00000", "00001", "00010", "00011", "00100", "00101", 
-	"00110", "00111", "01000", "01001", "01010", "01011", 
-	"01100", "01101", "01110", "01111", "10000", "10001", 
-	"10010", "10011", "10100", "10101", "10110", "10111",
-	"11000", "11001", "11010"); -- Esse vetor nunca deve ser modificado! Serve para o reset
+											"00110", "00111", "01000", "01001", "01010", "01011", 
+											"01100", "01101", "01110", "01111", "10000", "10001", 
+											"10010", "10011", "10100", "10101", "10110", "10111",
+											"11000", "11001", "11010"); -- Esse vetor nunca deve ser modificado! Serve para o reset
+	
+	signal s_final_letter_dir, s_final_letter_inv : std_logic_vector(4 downto 0);
 begin
 	process(clock, clear, switch_letters, letters)
 	begin
@@ -58,8 +60,17 @@ begin
 				letters(to_integer(unsigned(to_letter))) <= from_letter_dir;
 			end if;
 		end if;
-		end process;
+	end process;
+	process(from_letter_dir, from_letter_inv, letters, s_final_letter_dir, s_final_letter_inv)
+	begin
+		if (to_integer(unsigned(from_letter_dir)) < 27) then
+			s_final_letter_dir <= letters(to_integer(unsigned(from_letter_dir)));
+		end if;
+		if (to_integer(unsigned(from_letter_inv)) < 27) then
+			s_final_letter_inv <= letters(to_integer(unsigned(from_letter_inv)));
+		end if;
+	end process;
 
-	final_letter_dir <= letters(to_integer(unsigned(from_letter_dir)));
-	final_letter_inv <= letters(to_integer(unsigned(from_letter_inv)));
+	final_letter_dir <= s_final_letter_dir;
+	final_letter_inv <= s_final_letter_inv;
 end plugboard_2way_arch;

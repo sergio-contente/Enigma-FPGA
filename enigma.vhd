@@ -113,6 +113,7 @@ architecture enigma_arch of enigma is
 	signal s_config_device : std_logic_vector(3 downto 0);
 	signal s_entrada,	s_letra_visor_1,	s_letra_visor_2, s_letra_visor_3,	s_saida, s_estado : std_logic_vector(4 downto 0);
 	signal s_entrada_ascii,	s_saida_ascii : std_logic_vector(6 downto 0);
+	signal s_saida_ascii_8b : std_logic_vector(7 downto 0);
 
 begin
 	process(clock, s_not_clock)
@@ -150,7 +151,7 @@ begin
 			estado             => s_estado
 		);
 	
-	s_conta_plug_config <= '1' when s_set_config = '1' and s_config_device = "0001";
+	s_conta_plug_config <= '1' when s_set_config = '1' and s_config_device = "1011" else '0';
 	
 	contador_plug_config : contador_m
 		generic map (
@@ -191,13 +192,15 @@ begin
 			ascii => s_saida_ascii
     );
 	
+	s_saida_ascii_8b <= '0' & s_saida_ascii;
+
 	transmissor : tx_serial_8N2
     port map(
 			clock                 => clock,
 			reset                 => reset,
 			partida               => s_transmite,
 			protocol              => '1',
-			dados_ascii           => '0' & s_saida_ascii,
+			dados_ascii           => s_saida_ascii_8b,
 			saida_serial          => saida_serial,
 			pronto                => s_pronto_tx,
 			saida_protocol        => open,
