@@ -127,8 +127,7 @@ begin
             );
     gira_prox <= s_gira_prox;
     s_pos_rotor <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_pos_ini))
-                                                + to_integer(unsigned(s_rot_atual))
-                                                - to_integer(unsigned(s_pos_anel))) mod 27), s_conex_dir_in'length));
+                                                + to_integer(unsigned(s_rot_atual))) mod 27), s_conex_dir_in'length));
 
     anel_config : registrador_n
         generic map (
