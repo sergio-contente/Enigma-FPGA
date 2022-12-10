@@ -68,7 +68,7 @@ begin
 					end if;
 				when "00101" =>    -- F
 					if (direction = '0') then
-						s_letter_out <= "11010"; -- rotor 3, " "
+						s_letter_out <= "01011"; -- rotor 3, L
 					else
 						s_letter_out <= "00010"; -- rotor 3, C
 					end if;
@@ -106,7 +106,7 @@ begin
 					if (direction = '0') then
 						s_letter_out <= "10101"; -- rotor 3, V
 					else
-						s_letter_out <= "11010"; -- rotor 3, " "
+						s_letter_out <= "00101"; -- rotor 3, F
 					end if;
 				when "01100" =>    -- M
 					if (direction = '0') then
@@ -191,12 +191,6 @@ begin
 						s_letter_out <= "01110"; -- rotor 3, O
 					else
 						s_letter_out <= "01100"; -- rotor 3, M
-					end if;
-				when "11010" =>    -- " "
-					if (direction = '0') then
-								s_letter_out <= "01011"; -- rotor 1, L
-					else
-								s_letter_out <= "00101"; -- rotor 1, F
 					end if;
 				when others =>     -- should never be reached
 					s_letter_out <= (others => '1'); -- non-existing letter code ("11111")

@@ -44,7 +44,7 @@ architecture rotor_arch of rotor is
 
     component contador_m is
         generic (
-            constant M : integer := 27;  
+            constant M : integer := 26;  
             constant N : integer := 5
         );
         port (
@@ -117,7 +117,7 @@ begin
     
     letra_visor <= s_letra_visor;
     s_letra_visor <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_pos_ini))
-                                                   + to_integer(unsigned(s_rot_atual))) mod 27), s_conex_dir_in'length));
+                                                   + to_integer(unsigned(s_rot_atual))) mod 26), s_conex_dir_in'length));
 
     turnover_prox : rotor_turnover
         port map(
@@ -127,7 +127,7 @@ begin
             );
     gira_prox <= s_gira_prox;
     s_pos_rotor <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_pos_ini))
-                                                + to_integer(unsigned(s_rot_atual))) mod 27), s_conex_dir_in'length));
+                                                + to_integer(unsigned(s_rot_atual))) mod 26), s_conex_dir_in'length));
 
     anel_config : registrador_n
         generic map (
@@ -155,7 +155,7 @@ begin
 
 	rotacao : contador_m
 		generic map (
-			M => 27,
+			M => 26,
 			N => 5
 		)
 		port map (
@@ -170,7 +170,7 @@ begin
     s_conex_dir_in <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_entrada_dir))
                                                    + to_integer(unsigned(s_pos_ini))
                                                    + to_integer(unsigned(s_rot_atual))
-                                                   - to_integer(unsigned(s_pos_anel))) mod 27), s_conex_dir_in'length));
+                                                   - to_integer(unsigned(s_pos_anel))) mod 26), s_conex_dir_in'length));
 
     tradutor_I_dir : translator_I
         port map (
@@ -222,12 +222,12 @@ begin
     s_saida_dir <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_conex_dir_out))
                                                 - to_integer(unsigned(s_pos_ini))
                                                 - to_integer(unsigned(s_rot_atual))
-                                                + to_integer(unsigned(s_pos_anel))) mod 27), s_conex_dir_in'length));
+                                                + to_integer(unsigned(s_pos_anel))) mod 26), s_conex_dir_in'length));
 
     s_conex_inv_in <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_entrada_inv))
                                                    + to_integer(unsigned(s_pos_ini))
                                                    + to_integer(unsigned(s_rot_atual))
-                                                   - to_integer(unsigned(s_pos_anel))) mod 27), s_conex_inv_in'length));
+                                                   - to_integer(unsigned(s_pos_anel))) mod 26), s_conex_inv_in'length));
 
     tradutor_I_inv : translator_I
         port map (
@@ -279,6 +279,6 @@ begin
     s_saida_inv <= std_logic_vector(to_unsigned(((to_integer(unsigned(s_conex_inv_out))
                                                 - to_integer(unsigned(s_pos_ini))
                                                 - to_integer(unsigned(s_rot_atual))
-                                                + to_integer(unsigned(s_pos_anel))) mod 27), s_conex_inv_out'length));
+                                                + to_integer(unsigned(s_pos_anel))) mod 26), s_conex_inv_out'length));
 
 end architecture;

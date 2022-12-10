@@ -52,7 +52,7 @@ begin
 					if (direction = '0') then
 							 s_letter_out <= "01100"; -- entrando, M (I - ETW)
 					else
-							 s_letter_out <= "11010"; -- saindo, " " (ETW - I)
+							 s_letter_out <= "11000"; -- saindo, Y (ETW - I)
 					end if;
 				when "00011" =>    -- D
 					if (direction = '0') then
@@ -182,7 +182,7 @@ begin
 						end if;
 					when "11000" =>    -- Y
 						if (direction = '0') then
-								 s_letter_out <= "11010"; -- rotor 1, " "
+								 s_letter_out <= "00010"; -- rotor 1, C
 						else
 								 s_letter_out <= "01110"; -- rotor 1, O
 						end if;
@@ -191,12 +191,6 @@ begin
 								 s_letter_out <= "01001"; -- rotor 1, J
 						else
 								 s_letter_out <= "01001"; -- rotor 1, J
-						end if;
-					when "11010" =>    -- " "
-						if (direction = '0') then
-								 s_letter_out <= "00010"; -- rotor 1, C
-						else
-								 s_letter_out <= "11000"; -- rotor 1, Y
 						end if;
 					when others =>     -- should never be reached
 						s_letter_out <= (others => '1'); -- non-existing letter code ("11111")

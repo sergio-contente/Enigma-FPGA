@@ -80,8 +80,8 @@ architecture fd_arch of fd is
     signal s_rotor_1_type, s_rotor_2_type, s_rotor_3_type : std_logic_vector(2 downto 0);
     
     signal s_entrada_dir_1, s_saida_dir_1, s_entrada_inv_1, s_saida_inv_1, s_to_letter,
-           s_entrada_dir_2, s_saida_dir_2, s_entrada_inv_2, s_saida_inv_2,
-           s_entrada_dir_3, s_saida_dir_3, s_entrada_inv_3, s_saida_inv_3 : std_logic_vector(4 downto 0);
+           s_saida_dir_2, s_entrada_inv_2,
+           s_saida_dir_3, s_entrada_inv_3 : std_logic_vector(4 downto 0);
 begin
 
     s_plug_config_enable <= '1' when set_config = '1' and config_device = "0000" else '0';
