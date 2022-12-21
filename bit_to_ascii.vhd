@@ -38,7 +38,7 @@ begin
                  "1011000" when fivebit = "10111" else
                  "1011001" when fivebit = "11000" else
                  "1011010" when fivebit = "11001" else
-                 "0100000" when fivebit = "11010" else
+                --  "0100000" when fivebit = "11010" else
                  "1111111";
     
     ascii <= converted;

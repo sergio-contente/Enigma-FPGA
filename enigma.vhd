@@ -42,6 +42,7 @@ architecture enigma_arch of enigma is
 			set_config : out std_logic;
 			anel_not_pos_ini : out std_logic;
 			gira  : out std_logic;
+			reg_let : out std_logic;
 			config_device : out std_logic_vector(3 downto 0);
 			transmite : out std_logic;
 			estado : out std_logic_vector(4 downto 0)
@@ -88,6 +89,19 @@ architecture enigma_arch of enigma is
 			 );
 	 end component;
 
+	 component registrador_n is
+		 generic (
+			constant N: integer := 8 
+		 );
+		 port (
+			clock  : in  std_logic;
+			clear  : in  std_logic;
+			enable : in  std_logic;
+			D      : in  std_logic_vector (N-1 downto 0);
+			Q      : out std_logic_vector (N-1 downto 0) 
+		 );
+	 end component;
+
 	 component hex7seg is
     port (
 			hexa : in  std_logic_vector(3 downto 0);
@@ -109,9 +123,9 @@ architecture enigma_arch of enigma is
     );
 	 end component;
 
-	signal s_set_config, s_anel_not_pos_ini, s_gira, s_tem_dado, s_pronto_config_plug, s_pronto_tx, s_transmite, s_conta_plug_config, s_not_clock : std_logic;
+	signal s_set_config, s_anel_not_pos_ini, s_gira, s_tem_dado, s_reg_let, s_pronto_config_plug, s_pronto_tx, s_transmite, s_conta_plug_config, s_not_clock : std_logic;
 	signal s_config_device : std_logic_vector(3 downto 0);
-	signal s_entrada,	s_letra_visor_1,	s_letra_visor_2, s_letra_visor_3,	s_saida, s_estado : std_logic_vector(4 downto 0);
+	signal s_entrada,	s_letra_visor_1,	s_letra_visor_2, s_letra_visor_3, s_saida, s_estado, s_entrada_prov : std_logic_vector(4 downto 0);
 	signal s_entrada_ascii,	s_saida_ascii : std_logic_vector(6 downto 0);
 	signal s_saida_ascii_8b : std_logic_vector(7 downto 0);
 
@@ -120,6 +134,18 @@ begin
 	begin
 		s_not_clock <= not clock;
 	end process;
+
+    letter_received : registrador_n
+    generic map (
+        N => 5
+    )
+    port map (
+        clock => clock,
+        clear => reset,
+        enable => s_reg_let,
+        D => s_entrada_prov,
+        Q => s_entrada
+    );
 
 	enigma_fd : fd
 		port map(
@@ -146,6 +172,7 @@ begin
 			set_config         => s_set_config,
 			anel_not_pos_ini   => s_anel_not_pos_ini,
 			gira               => s_gira,
+			reg_let			 => s_reg_let,
 			config_device      => s_config_device,
 			transmite          => s_transmite,
 			estado             => s_estado
@@ -182,7 +209,7 @@ begin
 	conversor_entrada : ascii_to_5bit
 		port map(
 			ascii => s_entrada_ascii,
-			fivebit  => s_entrada
+			fivebit  => s_entrada_prov
 		);
 	
 	
@@ -208,4 +235,10 @@ begin
 			partida_o             => open,
 			dados_ascii_o         => open
     );
+
+	display: hex7seg 
+		port map (
+				hexa =>s_estado(3 downto 0),
+				sseg => estado_db
+		);
 end architecture;

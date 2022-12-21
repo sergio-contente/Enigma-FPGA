@@ -12,6 +12,7 @@ entity uc is
         set_config : out std_logic;
         anel_not_pos_ini : out std_logic;
         gira  : out std_logic;
+        reg_let  : out std_logic;
         config_device : out std_logic_vector(3 downto 0);
         transmite : out std_logic;
         estado : out std_logic_vector(4 downto 0)
@@ -23,7 +24,7 @@ architecture uc_arch of uc is
                          espera_rot_1, registra_rot_1, espera_anel_1, registra_anel_1, espera_pos_1,
                          registra_pos_1, espera_rot_2, registra_rot_2, espera_anel_2, registra_anel_2,
                          espera_pos_2, registra_pos_2, espera_rot_3, registra_rot_3, espera_anel_3, registra_anel_3,
-                         espera_pos_3, registra_pos_3, espera_refl, registra_refl, espera_letra, gira_rot,
+                         espera_pos_3, registra_pos_3, espera_refl, registra_refl, espera_letra, gira_rot, regis_let,
                          transmite_cifra);
     signal Eatual: tipo_estado;  -- estado atual
     signal Eprox:  tipo_estado;  -- proximo estado
@@ -117,9 +118,11 @@ begin
   
         when registra_refl =>       Eprox <= espera_letra;
   
-        when espera_letra =>        if tem_dado='1' then Eprox <= gira_rot;
+        when espera_letra =>        if tem_dado='1' then Eprox <= regis_let;
                                     else                 Eprox <= espera_letra;
                                     end if;
+  
+        when regis_let =>            Eprox <= gira_rot;
   
         when gira_rot =>            Eprox <= transmite_cifra;
   
@@ -182,7 +185,10 @@ begin
                             '0' when others;
   
     with Eatual select
-        gira <= '1' when gira_rot, '0' when others;
+        gira <= '1' when gira_rot, '0' when others;  
+
+    with Eatual select
+        reg_let <= '1' when regis_let, '0' when others;
   
     with Eatual select
         transmite <= '1' when transmite_cifra, '0' when others;

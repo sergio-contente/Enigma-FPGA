@@ -34,24 +34,24 @@ entity plugboard_2way is
 end plugboard_2way;
 
 architecture plugboard_2way_arch of plugboard_2way is
-	type alphabet is array (0 to 26) of std_logic_vector(4 downto 0);
+	type alphabet is array (0 to 25) of std_logic_vector(4 downto 0);
 	signal letters : alphabet := ("00000", "00001", "00010", "00011", "00100", "00101", 
 											"00110", "00111", "01000", "01001", "01010", "01011", 
 											"01100", "01101", "01110", "01111", "10000", "10001", 
 											"10010", "10011", "10100", "10101", "10110", "10111",
-											"11000", "11001", "11010"); -- Esse aqui eh o vetor que sofrer permutacoes com os ciclos de clock
+											"11000", "11001"); -- Esse aqui eh o vetor que sofrer permutacoes com os ciclos de clock
 	signal fixed_alphabet : alphabet := ("00000", "00001", "00010", "00011", "00100", "00101", 
 											"00110", "00111", "01000", "01001", "01010", "01011", 
 											"01100", "01101", "01110", "01111", "10000", "10001", 
 											"10010", "10011", "10100", "10101", "10110", "10111",
-											"11000", "11001", "11010"); -- Esse vetor nunca deve ser modificado! Serve para o reset
+											"11000", "11001"); -- Esse vetor nunca deve ser modificado! Serve para o reset
 	
 	signal s_final_letter_dir, s_final_letter_inv : std_logic_vector(4 downto 0);
 begin
 	process(clock, clear, switch_letters, letters)
 	begin
 		if (clear = '1') then 
-			for i in 0 to 26 loop
+			for i in 0 to 25 loop
 				letters(i) <= fixed_alphabet(i);
 			end loop;
 		elsif (clock'event and clock='1') then 
@@ -63,10 +63,10 @@ begin
 	end process;
 	process(from_letter_dir, from_letter_inv, letters, s_final_letter_dir, s_final_letter_inv)
 	begin
-		if (to_integer(unsigned(from_letter_dir)) < 27) then
+		if (to_integer(unsigned(from_letter_dir)) < 26) then
 			s_final_letter_dir <= letters(to_integer(unsigned(from_letter_dir)));
 		end if;
-		if (to_integer(unsigned(from_letter_inv)) < 27) then
+		if (to_integer(unsigned(from_letter_inv)) < 26) then
 			s_final_letter_inv <= letters(to_integer(unsigned(from_letter_inv)));
 		end if;
 	end process;
