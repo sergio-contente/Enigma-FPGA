@@ -42,6 +42,7 @@ architecture enigma_arch of enigma is
 			set_config : out std_logic;
 			anel_not_pos_ini : out std_logic;
 			gira  : out std_logic;
+			reg_let : out std_logic;
 			config_device : out std_logic_vector(3 downto 0);
 			transmite : out std_logic;
 			reset_rx : out std_logic;
@@ -88,6 +89,19 @@ architecture enigma_arch of enigma is
 			 );
 	 end component;
 
+	 component registrador_n is
+		 generic (
+			constant N: integer := 8 
+		 );
+		 port (
+			clock  : in  std_logic;
+			clear  : in  std_logic;
+			enable : in  std_logic;
+			D      : in  std_logic_vector (N-1 downto 0);
+			Q      : out std_logic_vector (N-1 downto 0) 
+		 );
+	 end component;
+
 	 component hex7seg is
     port (
 			hexa : in  std_logic_vector(3 downto 0);
@@ -122,6 +136,18 @@ begin
 		s_not_clock <= not clock;
 	end process;
 
+    letter_received : registrador_n
+    generic map (
+        N => 5
+    )
+    port map (
+        clock => clock,
+        clear => reset,
+        enable => s_reg_let,
+        D => s_entrada_prov,
+        Q => s_entrada
+    );
+
 	enigma_fd : fd
 		port map(
 			clock            => s_not_clock,
@@ -147,6 +173,7 @@ begin
 			set_config         => s_set_config,
 			anel_not_pos_ini   => s_anel_not_pos_ini,
 			gira               => s_gira,
+			reg_let			 => s_reg_let,
 			config_device      => s_config_device,
 			transmite          => s_transmite,
 			reset_rx           => s_reset_rx,
