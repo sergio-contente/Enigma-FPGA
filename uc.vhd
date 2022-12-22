@@ -14,6 +14,7 @@ entity uc is
         gira  : out std_logic;
         config_device : out std_logic_vector(3 downto 0);
         transmite : out std_logic;
+        reset_rx : out std_logic;
         estado : out std_logic_vector(4 downto 0)
     );
 end uc;
@@ -186,6 +187,23 @@ begin
   
     with Eatual select
         transmite <= '1' when transmite_cifra, '0' when others;
+    
+    with Eatual select
+        reset_rx <= '1' when transmite_cifra,
+                    '1' when registra_to_letter,
+                    '1' when conf_plug,
+                    '1' when registra_rot_1,
+                    '1' when registra_anel_1,
+                    '1' when registra_pos_1,
+                    '1' when registra_rot_2,
+                    '1' when registra_anel_2,
+                    '1' when registra_pos_2,
+                    '1' when registra_rot_3,
+                    '1' when registra_anel_3,
+                    '1' when registra_pos_3,
+                    '1' when registra_refl,
+                    '1' when gira_rot,
+                    '0' when others;
   
   -- logica db_estado
       with Eatual select
@@ -219,37 +237,3 @@ begin
                     "11011" when transmite_cifra,
                     "11111" when others;
 end architecture;
--- * - reset=1
--- inicial                        - 
--- espera_to_plug                (config_device=0000) - tem_dado=1
--- registra_to_letter                (set_config=1) - 
--- espera_from_plug                (config_device=1011) - tem_dado=1
--- conf_plug                (set_config=1) - pronto_config_plug=(0->espera_to_plug | 1->espera_rot_1)
--- espera_rot_1                (config_device=0001) - tem_dado=1
--- registra_rot_1                (set_config=1) -
--- espera_anel_1                (config_device=0010 and anel_not_pos_ini=1) - tem_dado=1
--- registra_anel_1                (set_config=1) -
--- espera_pos_1                (config_device=0011) - tem_dado=1
--- registra_pos_1                (set_config=1) -
--- espera_rot_2                (config_device=0100) - tem_dado=1
--- registra_rot_2                (set_config=1) -
--- espera_anel_2                (config_device=0101 and anel_not_pos_ini=1) - tem_dado=1
--- registra_anel_2                (set_config=1) -
--- espera_pos_2                (config_device=0110) - tem_dado=1
--- registra_pos_2                (set_config=1) -
--- espera_rot_3                (config_device=0111) - tem_dado=1
--- registra_rot_3                (set_config=1) -
--- espera_anel_3                (config_device=1000 and anel_not_pos_ini=1) - tem_dado=1
--- registra_anel_3                (set_config=1) -
--- espera_pos_3                (config_device=1001) - tem_dado=1
--- registra_pos_3                (set_config=1) -
--- espera_refl                (config_device=1010) - tem_dado=1
--- registra_refl                (set_config=1) -
--- espera_letra             - tem_dado=1
--- gira_rot                (gira=1) -
--- transmite_cifra                (transmite=1) - pronto_tx=1->espera_letra
-
--- set_config - 0 when others
--- anel_not_pos_ini - 0 when others
--- gira - 0 when others
--- transmite - 0 when others

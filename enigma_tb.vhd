@@ -20,8 +20,8 @@ architecture tb of enigma_tb is
   
     -- Configura��es do clock
     constant clockPeriod : time := 20 ns;            -- 50MHz
-    -- constant bitPeriod   : time := 5208*clockPeriod; -- 5208 clocks por bit (9.600 bauds)
-    constant bitPeriod   : time := 434*clockPeriod;  -- 434 clocks por bit (115.200 bauds)
+    constant bitPeriod   : time := 5208*clockPeriod; -- 5208 clocks por bit (9.600 bauds)
+    -- constant bitPeriod   : time := 434*clockPeriod;  -- 434 clocks por bit (115.200 bauds)
     
     ---- UART_WRITE_BYTE()
     -- Procedimento para geracao da sequencia de comunicacao serial 8N2
@@ -58,10 +58,10 @@ architecture tb of enigma_tb is
     type casos_teste_array is array (natural range <>) of caso_teste_type;
     constant casos_teste : casos_teste_array :=
         (
-            (1, "01000100"),    -- D
-            (2, "11000011"),    -- C
-            (3, "11000101"),    -- E
-            (4, "01000010"),    -- B
+            (1, "01000001"),    -- D
+            (2, "01000001"),    -- C
+            (3, "01000001"),    -- E
+            (4, "01000001"),    -- B
             (5, "01000001"),    -- A
             (6, "01000001"),    -- A
             (7, "01000001"),    -- A
@@ -72,22 +72,22 @@ architecture tb of enigma_tb is
             (12, "01000001"),    -- A
             (13, "01000001"),    -- A
             (14, "01000010"),    -- B ROT 2
-            (15, "01000010"),    -- B
-            (16, "01000010"),    -- B
-            (17, "11000011"),    -- C ROT 3
-            (18, "11000011"),    -- C
-            (19, "11000011"),    -- C
-            (20, "01000010"),    -- B REFLETOR TIPO 2
-            (21, "01000100"),    -- D
-            (22, "01010011"),    -- S
-            (23, "11000011"),    -- C
-            (24, "01010011"),    -- S
-            (25, "11010001")     -- Q
-            -- (21, "11010100"),    -- T
-            -- (22, "11000101"),    -- E
-            -- (23, "01010011"),    -- S
-            -- (24, "11010100"),    -- T
-            -- (25, "11000101")     -- E
+            (15, "01000001"),    -- B
+            (16, "01000001"),    -- B
+            (17, "01000011"),    -- C ROT 3
+            (18, "01000001"),    -- C
+            (19, "01000001"),    -- C
+            (20, "01000001"),    -- B REFLETOR TIPO 2
+            (21, "01010100"),    -- T
+            (22, "01000101"),    -- E
+            (23, "01010011"),    -- S
+            (24, "01010100"),    -- T
+            (25, "01000101")     -- E
+            -- (21, "01000001"),    -- T
+            -- (22, "01000001"),    -- E
+            -- (23, "01000001"),    -- S
+            -- (24, "01000001"),    -- T
+            -- (25, "01000001")     -- E
             -- inserir aqui outros casos de teste (inserir "," na linha anterior)
         );
     signal caso : natural;
